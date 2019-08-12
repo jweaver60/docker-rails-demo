@@ -1,0 +1,57 @@
+version: "3"
+
+volumes:
+  postgres_data: {}
+  redis_data: {}
+
+services:
+  db:
+    image: postgres:11.5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:5.0
+    command: redis-server
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  mailcatcher:
+    image: schickling/mailcatcher:latest
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
+  web:
+    build: .
+    command: bin/rails server --port 3000 --binding=0.0.0.0
+    ports:
+      - "3000:3000"
+    links:
+      - db
+      - redis
+      - mailcatcher
+    volumes:
+      - .:/var/www/docker_test:delegated
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    links:
+      - db
+      - redis
+      - mailcatcher
+    volumes:
+      - .:/var/www/docker_test:delegated
+
+  webpacker:
+    build: .
+    command: ./bin/webpack-dev-server
+    volumes:
+      - .:/var/www/docker_test:delegated
+    ports:
+      - "3035:3035"
