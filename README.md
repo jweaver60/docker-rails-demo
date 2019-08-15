@@ -9,7 +9,11 @@ machine.
 
 - Make sure (Docker for Mac)[https://docs.docker.com/docker-for-mac/install/] is
   installed.
-- Run `docker-compose up --build` to build the images for the first time.
+- Run `docker-compose build` to build the images for the first time.
+= Run `docker-compose run web yarn install` to install JS assets.
+= Run `docker-compose run web rake db:create` to create the database.
+= Run `docker-compose run web rake db:migrate` to migrate the database.
+= Run `docker-compose up` to start the app.
 - Run `docker-compose down` from another terminal tab (or Ctrl-C) to quit.
 - For subsequent runs just use `docker-compose up`.
 
