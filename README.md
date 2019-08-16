@@ -9,6 +9,7 @@ machine.
 
 - Make sure (Docker for Mac)[https://docs.docker.com/docker-for-mac/install/] is
   installed.
+- If you have Postgres/Redis installed locally make sure they aren't running.
 - Run `docker-compose build` to build the images for the first time.
 = Run `docker-compose run web yarn install` to install JS assets.
 = Run `docker-compose run web rake db:create` to create the database.
